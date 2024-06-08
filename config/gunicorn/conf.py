@@ -1,5 +1,5 @@
-name = 'webapp'
-loglevel = 'info'
-errorlog = '-'
-accesslog = '-'
+name = "app"
+loglevel = "info"
+errorlog = "-"
+accesslog = "-"
 workers = 2

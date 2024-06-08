@@ -6,6 +6,9 @@ extend-ignore = E203,E501,E701
 count = True
 statistics = True
 
+per-file-ignores =
+    app/settings/*: F403,F401
+
 exclude =
     .git,
     __pycache__,

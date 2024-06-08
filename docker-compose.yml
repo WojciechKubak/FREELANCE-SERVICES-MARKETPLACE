@@ -1,0 +1,57 @@
+version: "3.8"
+
+services:
+  db_dev:
+    image: postgres:latest
+    volumes:
+      - db_dev:/var/lib/postgresql/data
+    env_file:
+      - config/db/db_dev.env
+    ports:
+      - "5432:5432"
+    networks:
+      - webapp
+
+  db_test:
+    image: postgres:latest
+    volumes:
+      - db_test:/var/lib/postgresql/data
+    env_file:
+      - config/db/db_test.env
+    ports:
+      - "5433:5433"
+    networks:
+      - webapp
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - webapp
+    depends_on:
+      - django_app
+
+  django_app:
+    build: .
+    environment:
+      - DJANGO_SETTINGS_MODULE
+    volumes:
+      - ./:/app
+    ports:
+      - "8000:8000"
+    networks:
+      - webapp
+    depends_on:
+      - db_dev
+      - db_test
+
+networks:
+  webapp:
+
+volumes:
+  db_dev:
+  db_test:
+  nginx:

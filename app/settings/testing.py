@@ -11,5 +11,8 @@ DATABASES = {
         "PASSWORD": "user1234",
         "HOST": "db_test",
         "PORT": "5433",
+        "TEST": {
+            "NAME": "db_test",
+        },
     }
 }

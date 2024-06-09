@@ -61,6 +61,14 @@ MIDDLEWARE = [
 #     ]
 # }
 
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS").upper() == "TRUE"
+EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL").upper() == "TRUE"
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT"))
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+
 ROOT_URLCONF = "app.urls"
 
 TEMPLATES = [

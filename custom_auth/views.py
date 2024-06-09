@@ -4,10 +4,13 @@ from app.email import EmailService
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 import datetime
 
 
 class UserView(APIView):
+
+    permission_classes = (AllowAny,)
 
     def post(self, request) -> Response:
         serializer = UserSerializer(data=request.data)
@@ -25,6 +28,8 @@ class UserView(APIView):
 
 
 class ActivateUserView(APIView):
+
+    permission_classes = (AllowAny,)
 
     def get(self, request) -> Response:
         timestamp = float(request.query_params.get("timestamp"))

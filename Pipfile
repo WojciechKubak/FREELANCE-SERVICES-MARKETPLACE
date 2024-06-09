@@ -8,7 +8,6 @@ django = "*"
 gunicorn = "*"
 python-dotenv = "*"
 psycopg2 = "*"
-djangorestframework-jwt = "*"
 djangorestframework = "*"
 djangorestframework-simplejwt = "*"
 

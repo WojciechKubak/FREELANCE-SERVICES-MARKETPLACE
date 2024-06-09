@@ -60,7 +60,7 @@ AUTH_USER_MODEL = "custom_auth.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.isAuthenticated",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",

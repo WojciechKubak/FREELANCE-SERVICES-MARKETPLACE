@@ -4,7 +4,7 @@ from typing import Self
 import uuid
 
 
-class RoleTypes(models.TextChoices):
+class RoleType(models.TextChoices):
     ADMIN = "ADMIN", "Admin"
     USER = "USER", "User"
     AUTH = "AUTH", "Auth"
@@ -13,29 +13,19 @@ class RoleTypes(models.TextChoices):
 class UserManager(BaseUserManager):
 
     def create_user(
-        self, username: str, email: str, password: str, role: RoleTypes
+        self, username: str, email: str, password: str, role: RoleType
     ) -> Self:
-        if not username:
-            raise ValueError("Users must have a username")
-        if not email:
-            raise ValueError("Users must have an email address")
-        if role not in RoleTypes.values:
-            raise ValueError("Invalid role type")
-
         user = self.model(
-            username=username, email=self.normalize_email(email), role=role.value
+            username=username, email=self.normalize_email(email), role=role
         )
         user.set_password(password)
-
+        user.full_clean()
         user.save(using=self._db)
 
         return user
 
     def create_superuser(self, username: str, email: str, password: str) -> Self:
-        if not password:
-            raise ValueError("Superusers must have a password")
-
-        user = self.create_user(username, email, password, RoleTypes.ADMIN)
+        user = self.create_user(username, email, password, RoleType.ADMIN)
         user.is_admin = True
         user.save(using=self._db)
 
@@ -48,8 +38,8 @@ class User(AbstractBaseUser):
     email = models.EmailField(max_length=255, unique=True)
     role = models.CharField(
         max_length=10,
-        choices=RoleTypes,
-        default=RoleTypes.USER,
+        choices=RoleType,
+        default=RoleType.USER,
     )
     is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
@@ -62,14 +52,18 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["role"]
 
+    def activate(self) -> None:
+        self.is_active = True
+        self.save()
+
     @property
     def is_staff(self) -> bool:
         return self.is_admin
 
     @property
     def is_user(self) -> bool:
-        return self.role == RoleTypes.USER
+        return self.role == RoleType.USER
 
     @property
     def is_auth(self) -> bool:
-        return self.role in RoleTypes
+        return self.role in RoleType

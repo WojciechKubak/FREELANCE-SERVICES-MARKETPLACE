@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY", "secret-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get("DEBUG", 1))
+DEBUG = os.environ.get("DEBUG", 1).upper() == "TRUE"
 
 ALLOWED_HOSTS = []
 
@@ -66,7 +66,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
-    "EXCEPTION_HANDLER": "utils.exception_handler.custom_exception_handler",
+    "EXCEPTION_HANDLER": "app.exceptions.custom_exception_handler",
 }
 
 SIMPLE_JWT = {

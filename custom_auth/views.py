@@ -1,10 +1,47 @@
-from custom_auth.services import AuthService, RoleType
-from rest_framework import status
+from custom_auth.models import User, RoleType
+from custom_auth.services import AuthService
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.permissions import AllowAny, IsAdminUser
-from rest_framework import serializers
+from rest_framework import status, serializers
+
+
+class UserListApi(APIView):
+    permission_classes = (IsAdminUser,)
+
+    class Pagination(LimitOffsetPagination):
+        default_limit = 10
+        page_size_query_param = "count"
+        max_limit = 100
+
+    pagination_class = Pagination
+
+    class FilterSerializer(serializers.Serializer):
+        role = serializers.ChoiceField(choices=RoleType, required=False)
+        is_active = serializers.BooleanField(required=False)
+        is_admin = serializers.BooleanField(required=False)
+
+    class OutputSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = User
+            fields = ["id", "username", "email", "role", "is_active"]
+
+    def get(self, request: Request) -> Response:
+        filters_serializer = self.FilterSerializer(data=request.query_params)
+        filters_serializer.is_valid(raise_exception=True)
+
+        queryset = AuthService.get_all_users(filters=filters_serializer.validated_data)
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(queryset, request)
+
+        if page:
+            output_serializer = self.OutputSerializer(page, many=True)
+            return paginator.get_paginated_response(output_serializer.data)
+
+        output_serializer = self.OutputSerializer(queryset, many=True)
+        return Response(output_serializer.data, status=status.HTTP_200_OK)
 
 
 class UserCreateApi(APIView):

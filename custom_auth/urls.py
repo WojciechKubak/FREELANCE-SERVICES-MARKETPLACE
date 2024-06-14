@@ -1,4 +1,5 @@
 from custom_auth.views import (
+    UserListApi,
     UserCreateApi,
     UserActivateApi,
     UserRegisterApi,
@@ -12,6 +13,7 @@ auth_patterns = [
     path("refresh/", TokenRefreshView.as_view(), name="refresh"),
 ]
 user_patterns = [
+    path("", UserListApi.as_view(), name="list"),
     path("create/", UserCreateApi.as_view(), name="create"),
     path("register/", UserRegisterApi.as_view(), name="register"),
     path("activate/", UserActivateApi.as_view(), name="activate"),

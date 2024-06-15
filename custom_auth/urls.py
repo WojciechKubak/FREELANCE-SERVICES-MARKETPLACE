@@ -13,14 +13,14 @@ from django.urls import path, include
 auth_patterns = [
     path("login/", TokenObtainPairView.as_view(), name="login"),
     path("refresh/", TokenRefreshView.as_view(), name="refresh"),
+    path("register/", UserRegisterApi.as_view(), name="register"),
+    path("activate/", UserActivateApi.as_view(), name="activate"),
 ]
 user_patterns = [
     path("", UserListApi.as_view(), name="list"),
     path("<str:user_id>/", UserDetailApi.as_view(), name="detail"),
-    path("create/", UserCreateApi.as_view(), name="create"),
-    path("update/<str:user_id>", UserUpdateApi.as_view(), name="update"),
-    path("register/", UserRegisterApi.as_view(), name="register"),
-    path("activate/", UserActivateApi.as_view(), name="activate"),
+    path("<str:user_id>/", UserUpdateApi.as_view(), name="update"),
+    path("", UserCreateApi.as_view(), name="create"),
 ]
 
 urlpatterns = [

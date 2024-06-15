@@ -114,6 +114,14 @@ class UserUpdateApi(APIView):
         return Response(output_serializer.data, status=status.HTTP_200_OK)
 
 
+class UserDeleteApi(APIView):
+    permission_classes = (AllowAny,)
+
+    def delete(self, _: Request, user_id: str) -> Response:
+        AuthService.delete_user(user_id=user_id)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class UserRegisterApi(APIView):
     permission_classes = (AllowAny,)
 

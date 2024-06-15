@@ -47,6 +47,20 @@ class UserListApi(APIView):
         return Response(output_serializer.data, status=status.HTTP_200_OK)
 
 
+class UserDetailApi(APIView):
+    permission_classes = (IsAdminUser,)
+
+    class OutputSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = User
+            fields = ["id", "username", "email", "role", "is_active"]
+
+    def get(self, _: Request, user_id: str) -> Response:
+        user = AuthSelectors.get_user_detail(user_id=user_id)
+        output_serializer = self.OutputSerializer(user)
+        return Response(output_serializer.data, status=status.HTTP_200_OK)
+
+
 class UserCreateApi(APIView):
     permission_classes = (IsAdminUser,)
 

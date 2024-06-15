@@ -1,5 +1,6 @@
 from custom_auth.models import User, RoleType
 from custom_auth.services import AuthService
+from custom_auth.selectors import AuthSelectors
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -32,7 +33,9 @@ class UserListApi(APIView):
         filters_serializer = self.FilterSerializer(data=request.query_params)
         filters_serializer.is_valid(raise_exception=True)
 
-        queryset = AuthService.get_all_users(filters=filters_serializer.validated_data)
+        queryset = AuthSelectors.get_user_list(
+            filters=filters_serializer.validated_data
+        )
         paginator = self.pagination_class()
         page = paginator.paginate_queryset(queryset, request)
 

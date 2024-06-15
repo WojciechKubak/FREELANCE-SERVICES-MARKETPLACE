@@ -1,10 +1,8 @@
 from custom_auth.models import RoleType, User
 from django.core.exceptions import ValidationError
-from django.db.models import QuerySet
 from app.email import EmailService
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any
 
 
 @dataclass
@@ -21,10 +19,6 @@ class AuthService:
         )
         EmailService.send_activation_link(user, email)
         return user
-
-    @staticmethod
-    def get_all_users(*, filters: dict[str, Any]) -> QuerySet:
-        return User.objects.filter(**filters)
 
     @staticmethod
     def register_user(*, username: str, password: str, email: str) -> User:

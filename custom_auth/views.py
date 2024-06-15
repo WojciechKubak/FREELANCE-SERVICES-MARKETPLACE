@@ -1,6 +1,6 @@
 from custom_auth.models import User, RoleType
 from custom_auth.services import AuthService
-from custom_auth.selectors import AuthSelectors
+from django.shortcuts import get_object_or_404, get_list_or_404
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -33,9 +33,7 @@ class UserListApi(APIView):
         filters_serializer = self.FilterSerializer(data=request.query_params)
         filters_serializer.is_valid(raise_exception=True)
 
-        queryset = AuthSelectors.get_user_list(
-            filters=filters_serializer.validated_data
-        )
+        queryset = get_list_or_404(User, **filters_serializer.validated_data)
         paginator = self.pagination_class()
         page = paginator.paginate_queryset(queryset, request)
 
@@ -56,7 +54,7 @@ class UserDetailApi(APIView):
             fields = ["id", "username", "email", "role", "is_active"]
 
     def get(self, _: Request, user_id: str) -> Response:
-        user = AuthSelectors.get_user_detail(user_id=user_id)
+        user = get_object_or_404(User, id=user_id)
         output_serializer = self.OutputSerializer(user)
         return Response(output_serializer.data, status=status.HTTP_200_OK)
 

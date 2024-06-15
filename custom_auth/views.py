@@ -86,6 +86,34 @@ class UserCreateApi(APIView):
         return Response(output_serializer.data, status=status.HTTP_201_CREATED)
 
 
+class UserUpdateApi(APIView):
+    permission_classes = (IsAdminUser,)
+
+    class InputSerializer(serializers.Serializer):
+        username = serializers.CharField(max_length=20, required=False)
+        email = serializers.EmailField(max_length=30, required=False)
+        role = serializers.ChoiceField(choices=RoleType, required=False)
+
+    class OutputSerializer(serializers.Serializer):
+        id = serializers.UUIDField()
+        username = serializers.CharField(max_length=20)
+        email = serializers.EmailField(max_length=30)
+        role = serializers.ChoiceField(choices=RoleType)
+        is_active = serializers.BooleanField()
+        is_admin = serializers.BooleanField()
+
+    def put(self, request: Request, user_id: str) -> Response:
+        input_serializer = self.InputSerializer(data=request.data)
+        input_serializer.is_valid(raise_exception=True)
+
+        user_dto = AuthService.update_user(
+            user_id=user_id, **input_serializer.validated_data
+        )
+        output_serializer = self.OutputSerializer(user_dto)
+
+        return Response(output_serializer.data, status=status.HTTP_200_OK)
+
+
 class UserRegisterApi(APIView):
     permission_classes = (AllowAny,)
 

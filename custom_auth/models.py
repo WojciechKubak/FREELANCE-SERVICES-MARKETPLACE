@@ -30,6 +30,14 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["role"]
 
+    def update(self, username: str, email: str, role: RoleType) -> None:
+        self.username = username if username else self.username
+        self.email = email if email else self.email
+        self.role = role if role else self.role
+        self.is_admin = self.role == RoleType.ADMIN
+        self.full_clean()
+        self.save()
+
     def activate(self) -> None:
         self.is_active = True
         self.save()

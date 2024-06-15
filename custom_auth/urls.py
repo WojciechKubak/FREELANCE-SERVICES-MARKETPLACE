@@ -2,6 +2,7 @@ from custom_auth.views import (
     UserListApi,
     UserDetailApi,
     UserCreateApi,
+    UserUpdateApi,
     UserActivateApi,
     UserRegisterApi,
 )
@@ -17,6 +18,7 @@ user_patterns = [
     path("", UserListApi.as_view(), name="list"),
     path("<str:user_id>/", UserDetailApi.as_view(), name="detail"),
     path("create/", UserCreateApi.as_view(), name="create"),
+    path("update/<str:user_id>", UserUpdateApi.as_view(), name="update"),
     path("register/", UserRegisterApi.as_view(), name="register"),
     path("activate/", UserActivateApi.as_view(), name="activate"),
 ]

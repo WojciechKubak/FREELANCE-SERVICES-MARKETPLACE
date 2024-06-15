@@ -1,6 +1,7 @@
 from django.core.exceptions import (
     ValidationError as DjangoValidationError,
     PermissionDenied,
+    ObjectDoesNotExist,
 )
 from django.http import Http404
 from rest_framework.response import Response
@@ -15,6 +16,9 @@ def custom_exception_handler(
 ) -> Response:
     if isinstance(exception, DjangoValidationError):
         exception = exceptions.ValidationError(as_serializer_error(exception))
+
+    if isinstance(exception, ObjectDoesNotExist):
+        exception = exceptions.NotFound()
 
     if isinstance(exception, Http404):
         exception = exceptions.NotFound()

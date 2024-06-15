@@ -4,6 +4,10 @@ from app.email import EmailService
 from dataclasses import dataclass
 from datetime import datetime
 
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
 
 @dataclass
 class AuthService:
@@ -18,6 +22,14 @@ class AuthService:
             else User.objects.create_superuser(username, email, password)
         )
         EmailService.send_activation_link(user, email)
+        return user
+
+    @staticmethod
+    def update_user(
+        *, user_id: str, username: str = None, email: str = None, role: RoleType = None
+    ) -> User:
+        user = User.objects.get(id=user_id)
+        user.update(username, email, role)
         return user
 
     @staticmethod

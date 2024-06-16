@@ -7,7 +7,7 @@ import uuid
 class RoleType(models.TextChoices):
     ADMIN = "ADMIN", "Admin"
     USER = "USER", "User"
-    AUTH = "AUTH", "Auth"
+    REDACTOR = "REDACTOR", "Redactor"
 
 
 class UserManager(BaseUserManager):
@@ -41,7 +41,6 @@ class User(AbstractBaseUser):
         choices=RoleType,
         default=RoleType.USER,
     )
-    is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
 
     objects = UserManager()
@@ -58,10 +57,6 @@ class User(AbstractBaseUser):
         self.role = role if role else self.role
         self.is_admin = self.role == RoleType.ADMIN
         self.full_clean()
-        self.save()
-
-    def activate(self) -> None:
-        self.is_active = True
         self.save()
 
     @property

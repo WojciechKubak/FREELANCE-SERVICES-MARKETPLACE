@@ -1,0 +1,27 @@
+<title>Article Detail</title>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="mb-4">
+        {% include 'articles/navbar.html' %}
+    </header>
+
+    <main class="container">
+        <h2 class="mb-4">Tags</h2>
+        {% if has_permissions %}
+            <a href="{% url 'articles:create_tag' %}" class="btn btn-primary">Add tag</a>
+        {% endif %} 
+        {% for tag in tags %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ tag.name }}</h5>
+                </div>
+            </div>
+        {% empty %}
+            <p>No tags yet.</p>
+        {% endfor %}
+    </main>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

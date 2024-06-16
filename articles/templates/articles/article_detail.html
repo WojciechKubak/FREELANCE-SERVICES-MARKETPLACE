@@ -1,0 +1,30 @@
+<title>Article Detail</title>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="mb-4">
+        {% include 'articles/navbar.html' %}
+    </header>
+
+    <main class="container">
+        <h2 class="mb-4">{{ article.title }}</h2>
+        <h5 class="mb-2 text-muted">By {{ article.author.username }}</h5>
+        <p>{{ article.content }}</p>
+        <p>
+            <small class="text-muted">
+                Category: <span class="badge badge-info">{{ article.category.name }}</span>
+            </small>
+        </p>
+        <p>
+            <small class="text-muted">
+                Tags: 
+                {% for tag in article.tags.all %}
+                    <span class="badge badge-primary">{{ tag.name }}</span>
+                {% endfor %}
+            </small>
+        </p>
+    </main>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

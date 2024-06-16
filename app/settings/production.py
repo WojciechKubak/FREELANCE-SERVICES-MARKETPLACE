@@ -2,8 +2,6 @@ from app.settings.base import *
 import os
 
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",

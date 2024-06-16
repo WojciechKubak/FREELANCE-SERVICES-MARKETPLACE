@@ -4,10 +4,6 @@ from app.email import EmailService
 from dataclasses import dataclass
 from datetime import datetime
 
-import logging
-
-logging.basicConfig(level=logging.INFO)
-
 
 @dataclass
 class AuthService:

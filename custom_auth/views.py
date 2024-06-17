@@ -1,5 +1,5 @@
 from custom_auth.models import User, RoleType
-from custom_auth.services import AuthService
+from custom_auth.service import UserService
 from django.shortcuts import get_object_or_404, get_list_or_404
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.views import APIView
@@ -80,7 +80,7 @@ class UserCreateApi(APIView):
         input_serializer = self.InputSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
 
-        user_dto = AuthService.create_user(**input_serializer.validated_data)
+        user_dto = UserService.create_user(**input_serializer.validated_data)
         output_serializer = self.OutputSerializer(user_dto)
 
         return Response(output_serializer.data, status=status.HTTP_201_CREATED)
@@ -106,7 +106,7 @@ class UserUpdateApi(APIView):
         input_serializer = self.InputSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
 
-        user_dto = AuthService.update_user(
+        user_dto = UserService.update_user(
             user_id=user_id, **input_serializer.validated_data
         )
         output_serializer = self.OutputSerializer(user_dto)
@@ -118,7 +118,7 @@ class UserDeleteApi(APIView):
     permission_classes = (AllowAny,)
 
     def delete(self, _: Request, user_id: str) -> Response:
-        AuthService.delete_user(user_id=user_id)
+        UserService.delete_user(user_id=user_id)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -139,7 +139,7 @@ class UserRegisterApi(APIView):
         input_serializer = self.InputSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
 
-        user_dto = AuthService.register_user(**input_serializer.validated_data)
+        user_dto = UserService.register_user(**input_serializer.validated_data)
         output_serializer = self.OutputSerializer(user_dto)
 
         return Response(output_serializer.data, status=status.HTTP_201_CREATED)
@@ -149,7 +149,7 @@ class UserActivateApi(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request: Request) -> Response:
-        AuthService.activate_user(
+        UserService.activate_user(
             request.query_params.get("username"),
             float(request.query_params.get("timestamp")),
         )

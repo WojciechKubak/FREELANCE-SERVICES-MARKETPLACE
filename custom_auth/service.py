@@ -6,7 +6,7 @@ from datetime import datetime
 
 
 @dataclass
-class AuthService:
+class UserService:
 
     @staticmethod
     def create_user(

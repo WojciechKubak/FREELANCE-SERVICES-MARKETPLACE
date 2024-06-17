@@ -1,6 +1,6 @@
+from emails.service import EmailService
 from custom_auth.models import RoleType, User
 from django.core.exceptions import ValidationError
-from app.email import EmailService
 from dataclasses import dataclass
 from datetime import datetime
 

@@ -35,6 +35,7 @@ ALLOWED_HOSTS = ["*"]
 
 LOCAL_APPS = [
     "custom_auth",
+    "emails",
 ]
 
 THIRD_PARTY_APPS = [

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+from app.env import env_to_bool, env_to_int
 from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
@@ -27,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY", "secret-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", 1).upper() == "TRUE"
+DEBUG = env_to_bool(os.environ.get("DEBUG", 1))
 
 ALLOWED_HOSTS = []
 
@@ -99,9 +100,9 @@ SIMPLE_JWT = {
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_HOST = os.environ.get("EMAIL_HOST")
-EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS").upper() == "TRUE"
-EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL").upper() == "TRUE"
-EMAIL_PORT = int(os.environ.get("EMAIL_PORT"))
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS")
+EMAIL_USE_SSL = env_to_bool(os.environ["EMAIL_USE_SSL"])
+EMAIL_PORT = env_to_int(os.environ.get("EMAIL_PORT"))
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 

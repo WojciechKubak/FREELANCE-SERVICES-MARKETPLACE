@@ -30,10 +30,18 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "secret-key")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env_to_bool(os.environ.get("DEBUG", 1))
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
+
+LOCAL_APPS = [
+    "custom_auth",
+]
+
+THIRD_PARTY_APPS = [
+    "rest_framework",
+    "rest_framework_simplejwt",
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -42,9 +50,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "rest_framework",
-    "rest_framework_simplejwt",
-    "custom_auth",
+    *LOCAL_APPS,
+    *THIRD_PARTY_APPS,
 ]
 
 MIDDLEWARE = [
@@ -56,7 +63,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
 
 AUTH_USER_MODEL = "custom_auth.User"
 

@@ -1,7 +1,7 @@
 from app.settings.base import *
 
 
-EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 DATABASES = {
     "default": {
@@ -11,8 +11,7 @@ DATABASES = {
         "PASSWORD": "user1234",
         "HOST": "db_test",
         "PORT": "5433",
-        "TEST": {
-            "NAME": "db_test",
-        },
     }
 }
+
+PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]

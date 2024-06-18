@@ -1,4 +1,5 @@
 from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 from dataclasses import dataclass
 from datetime import datetime
 
@@ -10,17 +11,13 @@ class EmailService:
     def send_activation_link(username: str, email: str) -> None:
         timestamp = datetime.now().timestamp() * 1000 + 120000
 
-        email_body = f"""\
-            <html>
-                <body>
-                    <div>
-                        <h1>Hello {username}!</h1>
-                        <h2>Activate your account</h2>
-                        <h3>http://localhost:80/auth/activate?username={username}&timestamp={timestamp}</h3>
-                    </div>
-                </body>
-            </html>
-        """
+        email_body = render_to_string(
+            "activation_email.html",
+            {
+                "username": username,
+                "timestamp": timestamp,
+            },
+        )
 
         email = EmailMessage(
             subject="Activate your account",

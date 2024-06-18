@@ -76,12 +76,27 @@ REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "app.exceptions.custom_exception_handler",
 }
 
+# based on https://www.hacksoft.io/blog/github-actions-in-action-setting-up-django-and-postgres
+if os.environ.get("GITHUB_WORKFLOW"):
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "github_actions",
+            "USER": "postgres",
+            "PASSWORD": "postgres",
+            "HOST": "127.0.0.1",
+            "PORT": "5432",
+        }
+    }
+
 ROOT_URLCONF = "app.urls"
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+            os.path.join(BASE_DIR, "emails/templates"),
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

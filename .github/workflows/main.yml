@@ -13,30 +13,41 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+
+    # based on https://www.hacksoft.io/blog/github-actions-in-action-setting-up-django-and-postgres
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: github_actions
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
     - uses: actions/checkout@v4
     - name: Set up Python 3.12
       uses: actions/setup-python@v3
       with:
         python-version: "3.12"
+    
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install pipenv
         pipenv install --system
         pipenv install --dev --system
+    
     - name: Format with Black
       run: |
         pipenv run black --check .
+    
     - name: Lint with flake8
       run: |
         pipenv run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         pipenv run flake8 . --count --max-complexity=10 --statistics
-    - name: Test with django
+    
+    - name: Test with pytest-django
       run: |
-        python manage.py test
-      env:
-        POSTGRES_NAME: ${{ secrets.POSTGRES_NAME }}
-        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-        POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-        POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+        pipenv run pytest

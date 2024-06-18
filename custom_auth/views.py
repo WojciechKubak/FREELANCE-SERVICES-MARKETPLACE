@@ -150,7 +150,7 @@ class UserActivateApi(APIView):
 
     def get(self, request: Request) -> Response:
         UserService.activate_user(
-            request.query_params.get("username"),
-            float(request.query_params.get("timestamp")),
+            username=request.query_params.get("username"),
+            timestamp=float(request.query_params.get("timestamp")),
         )
         return Response({"message": "User activated"}, status=status.HTTP_200_OK)

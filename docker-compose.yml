@@ -19,7 +19,7 @@ services:
     env_file:
       - config/db/db_test.env
     ports:
-      - "5433:5433"
+      - "5433:5432"
     networks:
       - webapp
 

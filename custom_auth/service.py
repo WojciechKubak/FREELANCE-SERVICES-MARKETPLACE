@@ -29,9 +29,14 @@ class UserService:
         return user
 
     @staticmethod
+    def delete_user(*, user_id: str) -> None:
+        user = User.objects.get(id=user_id)
+        user.delete()
+
+    @staticmethod
     def register_user(*, username: str, password: str, email: str) -> User:
         user = User.objects.create_user(username, email, password, RoleType.USER)
-        EmailService.send_activation_link(user, email)
+        EmailService.send_activation_link(username, email)
         return user
 
     @staticmethod

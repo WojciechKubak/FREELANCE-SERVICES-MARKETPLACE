@@ -17,6 +17,7 @@ black = "*"
 flake8-bugbear = "*"
 pre-commit = "*"
 pytest-django = "*"
+factory-boy = "*"
 
 [requires]
 python_version = "3.12"

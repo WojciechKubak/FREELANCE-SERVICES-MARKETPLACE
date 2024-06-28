@@ -44,4 +44,5 @@ class ProfileFactory(DjangoModelFactory):
     first_name = factory.Faker("first_name")
     last_name = factory.Faker("last_name")
     description = factory.Faker("sentence")
-    location = factory.Faker("city")
+    country = factory.Faker("country")
+    city = factory.Faker("city")

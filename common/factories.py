@@ -14,7 +14,7 @@ class UserFactory(DjangoModelFactory):
     email = factory.LazyAttribute(lambda a: f"{a.username}@example.com")
     role = factory.Iterator(RoleType)
     password = factory.django.Password("password")
-    is_active = factory.Faker("boolean")
+    is_active = True
     is_admin = factory.Faker("boolean")
 
 

@@ -1,6 +1,7 @@
 from factory.django import DjangoModelFactory
 from custom_auth.models import User, RoleType
 from categories.models import Category, Tag
+from profiles.models import Profile
 import factory
 
 
@@ -33,3 +34,14 @@ class TagFactory(DjangoModelFactory):
     name = factory.Faker("word")
     author = factory.SubFactory(UserFactory)
     category = factory.SubFactory(CategoryFactory)
+
+
+class ProfileFactory(DjangoModelFactory):
+    class Meta:
+        model = Profile
+
+    user = factory.SubFactory(UserFactory)
+    first_name = factory.Faker("first_name")
+    last_name = factory.Faker("last_name")
+    description = factory.Faker("sentence")
+    location = factory.Faker("city")

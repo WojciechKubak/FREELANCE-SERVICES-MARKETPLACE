@@ -52,3 +52,32 @@ class ProfileCreateApi(APIView):
         output_serializer = self.OutputSerializer(profile)
 
         return Response(output_serializer.data, status=HTTP_200_OK)
+
+
+class ProfileUpdateApi(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    class InputSerializer(serializers.Serializer):
+        first_name = serializers.CharField(max_length=30)
+        last_name = serializers.CharField(max_length=30)
+        country = serializers.CharField(max_length=30)
+        description = serializers.CharField(max_length=255, required=False)
+        city = serializers.CharField(max_length=30)
+
+    class OutputSerializer(serializers.Serializer):
+        id = serializers.IntegerField()
+        first_name = serializers.CharField(max_length=30)
+        last_name = serializers.CharField(max_length=30)
+        country = serializers.CharField(max_length=30)
+        description = serializers.CharField(max_length=255, required=False)
+        city = serializers.CharField(max_length=30)
+
+    def put(self, request: Request, profile_id: int) -> Response:
+        profile = get_object_or_404(Profile, id=profile_id)
+        input_serializer = self.InputSerializer(data=request.data)
+        input_serializer.is_valid(raise_exception=True)
+
+        profile.update(**input_serializer.validated_data)
+        output_serializer = self.OutputSerializer(profile)
+
+        return Response(output_serializer.data, status=HTTP_200_OK)

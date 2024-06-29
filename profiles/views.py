@@ -4,7 +4,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.status import HTTP_200_OK
+from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT
 from django.shortcuts import get_object_or_404
 
 
@@ -20,7 +20,7 @@ class ProfileDetailApi(APIView):
         is_active = serializers.BooleanField(source="user.is_active")
 
     def get(self, _: Request, profile_id: int) -> Response:
-        profile = get_object_or_404(Profile, id=profile_id)
+        profile = get_object_or_404(Profile, id=profile_id, is_active=True)
         output_serializer = self.OutputSerializer(profile)
         return Response(output_serializer.data, status=HTTP_200_OK)
 
@@ -81,3 +81,21 @@ class ProfileUpdateApi(APIView):
         output_serializer = self.OutputSerializer(profile)
 
         return Response(output_serializer.data, status=HTTP_200_OK)
+
+
+class ProfileDeactivateApi(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, _: Request, profile_id: int) -> Response:
+        profile = get_object_or_404(Profile, id=profile_id)
+        profile.deactivate()
+        return Response(status=HTTP_204_NO_CONTENT)
+
+
+class ProfileActivateApi(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, _: Request, profile_id: int) -> Response:
+        profile = get_object_or_404(Profile, id=profile_id)
+        profile.activate()
+        return Response(status=HTTP_200_OK)

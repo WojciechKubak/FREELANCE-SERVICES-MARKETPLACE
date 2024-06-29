@@ -11,6 +11,14 @@ class Profile(models.Model):
 
     user = models.OneToOneField("custom_auth.User", on_delete=models.CASCADE)
 
+    def deactivate(self) -> None:
+        self.is_active = False
+        self.save()
+
+    def activate(self) -> None:
+        self.is_active = True
+        self.save()
+
     def update(
         self,
         first_name: str | None,

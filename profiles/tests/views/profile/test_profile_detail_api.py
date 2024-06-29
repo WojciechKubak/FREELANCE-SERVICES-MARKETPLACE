@@ -18,7 +18,7 @@ class TestProfileDetailApi:
 
     @pytest.mark.django_db
     def test_when_profile_found(self) -> None:
-        profile = ProfileFactory()
+        profile = ProfileFactory(is_active=True)
         factory = APIRequestFactory()
         request = factory.get(f"{self.url}/{profile.id}/")
 

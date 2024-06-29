@@ -1,4 +1,5 @@
 from profiles.models import Profile
+from profiles.services import ProfileService
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -50,7 +51,7 @@ class ProfileCreateApi(APIView):
         input_serializer = self.InputSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
 
-        profile = Profile.objects.create(
+        profile = ProfileService.create_profile(
             user=request.user, **input_serializer.validated_data
         )
         output_serializer = self.OutputSerializer(profile)

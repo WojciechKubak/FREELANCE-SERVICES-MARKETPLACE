@@ -78,11 +78,12 @@ class ProfileUpdateApi(APIView):
         city = serializers.CharField(max_length=50)
 
     def put(self, request: Request) -> Response:
-        profile = get_object_or_404(Profile, user=request.user)
         input_serializer = self.InputSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
 
-        profile.update(**input_serializer.validated_data)
+        profile = ProfileService.update_profile(
+            user=request.user, **input_serializer.validated_data
+        )
         output_serializer = self.OutputSerializer(profile)
 
         return Response(output_serializer.data, status=HTTP_200_OK)

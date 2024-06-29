@@ -28,3 +28,25 @@ class ProfileService:
             city=city,
         )
         return profile
+
+    @staticmethod
+    def update_profile(
+        *,
+        user: User,
+        first_name: str | None = None,
+        last_name: str | None = None,
+        country: str | None = None,
+        city: str | None = None,
+        description: str | None = None,
+    ) -> Profile:
+        profile = Profile.objects.filter(user=user).first()
+        if not profile:
+            raise ValidationError("Profile does not exist")
+        profile.update(
+            first_name=first_name,
+            last_name=last_name,
+            country=country,
+            city=city,
+            description=description,
+        )
+        return profile

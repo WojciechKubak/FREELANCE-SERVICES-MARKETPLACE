@@ -25,7 +25,7 @@ class TestProfileUpdateApi:
 
         response = ProfileUpdateApi.as_view()(request)
 
-        assert 404 == response.status_code
+        assert 400 == response.status_code
 
     @pytest.mark.django_db
     def test_when_profile_updated(self, auth_request) -> None:

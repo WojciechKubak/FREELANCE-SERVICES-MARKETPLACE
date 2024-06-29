@@ -11,7 +11,7 @@ from django.urls import path, include
 profile_patterns = [
     path("<int:profile_id>/", ProfileDetailApi.as_view(), name="profile-detail"),
     path("create/", ProfileCreateApi.as_view(), name="profile-create"),
-    path("<int:profile_id>update/", ProfileUpdateApi.as_view(), name="profile-update"),
+    path("update/", ProfileUpdateApi.as_view(), name="profile-update"),
     path(
         "<int:profile_id>/activate/",
         ProfileActivateApi.as_view(),

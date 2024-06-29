@@ -5,7 +5,7 @@ import pytest
 
 
 class TestProfileUpdateApi:
-    url = "/profiles"
+    url = "/profiles/update/"
 
     @pytest.mark.django_db
     def test_when_profile_does_not_exist(self, auth_request) -> None:
@@ -13,7 +13,7 @@ class TestProfileUpdateApi:
         request = auth_request(
             user=user,
             method="PUT",
-            url=f"{self.url}/999/update/",
+            url=self.url,
             data={
                 "first_name": "John",
                 "last_name": "Doe",
@@ -23,18 +23,17 @@ class TestProfileUpdateApi:
             },
         )
 
-        response = ProfileUpdateApi.as_view()(request, profile_id=999)
+        response = ProfileUpdateApi.as_view()(request)
 
         assert 404 == response.status_code
 
     @pytest.mark.django_db
     def test_when_profile_updated(self, auth_request) -> None:
-        user = UserFactory()
-        profile = ProfileFactory(user=user)
+        profile = ProfileFactory()
         request = auth_request(
-            user=user,
+            user=profile.user,
             method="PUT",
-            url=f"{self.url}/{profile.id}/update/",
+            url=self.url,
             data={
                 "first_name": "John",
                 "last_name": "Doe",
@@ -44,7 +43,7 @@ class TestProfileUpdateApi:
             },
         )
 
-        response = ProfileUpdateApi.as_view()(request, profile_id=profile.id)
+        response = ProfileUpdateApi.as_view()(request)
 
         assert 200 == response.status_code
         assert Profile.objects.filter(description=f"new_{profile.description}").exists()

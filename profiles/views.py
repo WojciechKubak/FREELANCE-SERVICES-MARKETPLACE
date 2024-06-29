@@ -77,8 +77,8 @@ class ProfileUpdateApi(APIView):
         description = serializers.CharField(max_length=255, required=False)
         city = serializers.CharField(max_length=50)
 
-    def put(self, request: Request, profile_id: int) -> Response:
-        profile = get_object_or_404(Profile, id=profile_id)
+    def put(self, request: Request) -> Response:
+        profile = get_object_or_404(Profile, user=request.user)
         input_serializer = self.InputSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
 

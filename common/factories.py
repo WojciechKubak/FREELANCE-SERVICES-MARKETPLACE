@@ -46,3 +46,4 @@ class ProfileFactory(DjangoModelFactory):
     description = factory.Faker("sentence")
     country = factory.Faker("country")
     city = factory.Faker("city")
+    is_active = factory.Faker("boolean")

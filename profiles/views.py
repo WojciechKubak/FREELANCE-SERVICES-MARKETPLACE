@@ -13,11 +13,13 @@ class ProfileDetailApi(APIView):
 
     class OutputSerializer(serializers.Serializer):
         id = serializers.IntegerField()
-        first_name = serializers.CharField(max_length=50)
-        last_name = serializers.CharField(max_length=50)
+        full_name = serializers.SerializerMethodField()
         country = serializers.CharField(max_length=50)
         city = serializers.CharField(max_length=50)
         is_active = serializers.BooleanField(source="user.is_active")
+
+        def get_full_name(self, obj: Profile) -> str:
+            return f"{obj.first_name} {obj.last_name[0]}."
 
     def get(self, _: Request, profile_id: int) -> Response:
         profile = get_object_or_404(Profile, id=profile_id, is_active=True)

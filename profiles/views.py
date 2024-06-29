@@ -13,10 +13,10 @@ class ProfileDetailApi(APIView):
 
     class OutputSerializer(serializers.Serializer):
         id = serializers.IntegerField()
-        first_name = serializers.CharField(max_length=30)
-        last_name = serializers.CharField(max_length=30)
-        country = serializers.CharField(max_length=30)
-        city = serializers.CharField(max_length=30)
+        first_name = serializers.CharField(max_length=50)
+        last_name = serializers.CharField(max_length=50)
+        country = serializers.CharField(max_length=50)
+        city = serializers.CharField(max_length=50)
         is_active = serializers.BooleanField(source="user.is_active")
 
     def get(self, _: Request, profile_id: int) -> Response:
@@ -29,18 +29,18 @@ class ProfileCreateApi(APIView):
     permission_classes = (IsAuthenticated,)
 
     class InputSerializer(serializers.Serializer):
-        first_name = serializers.CharField(max_length=30)
-        last_name = serializers.CharField(max_length=30)
-        country = serializers.CharField(max_length=30)
+        first_name = serializers.CharField(max_length=50)
+        last_name = serializers.CharField(max_length=50)
+        country = serializers.CharField(max_length=50)
         description = serializers.CharField(max_length=255, required=False)
-        city = serializers.CharField(max_length=30)
+        city = serializers.CharField(max_length=50)
 
     class OutputSerializer(serializers.Serializer):
         id = serializers.IntegerField()
-        first_name = serializers.CharField(max_length=30)
-        last_name = serializers.CharField(max_length=30)
-        country = serializers.CharField(max_length=30)
-        city = serializers.CharField(max_length=30)
+        first_name = serializers.CharField(max_length=50)
+        last_name = serializers.CharField(max_length=50)
+        country = serializers.CharField(max_length=50)
+        city = serializers.CharField(max_length=50)
 
     def post(self, request: Request) -> Response:
         input_serializer = self.InputSerializer(data=request.data)
@@ -58,19 +58,19 @@ class ProfileUpdateApi(APIView):
     permission_classes = (IsAuthenticated,)
 
     class InputSerializer(serializers.Serializer):
-        first_name = serializers.CharField(max_length=30)
-        last_name = serializers.CharField(max_length=30)
-        country = serializers.CharField(max_length=30)
+        first_name = serializers.CharField(max_length=50)
+        last_name = serializers.CharField(max_length=50)
+        country = serializers.CharField(max_length=50)
         description = serializers.CharField(max_length=255, required=False)
-        city = serializers.CharField(max_length=30)
+        city = serializers.CharField(max_length=50)
 
     class OutputSerializer(serializers.Serializer):
         id = serializers.IntegerField()
-        first_name = serializers.CharField(max_length=30)
-        last_name = serializers.CharField(max_length=30)
-        country = serializers.CharField(max_length=30)
+        first_name = serializers.CharField(max_length=50)
+        last_name = serializers.CharField(max_length=50)
+        country = serializers.CharField(max_length=50)
         description = serializers.CharField(max_length=255, required=False)
-        city = serializers.CharField(max_length=30)
+        city = serializers.CharField(max_length=50)
 
     def put(self, request: Request, profile_id: int) -> Response:
         profile = get_object_or_404(Profile, id=profile_id)

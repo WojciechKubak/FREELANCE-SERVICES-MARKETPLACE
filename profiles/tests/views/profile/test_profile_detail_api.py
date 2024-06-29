@@ -39,3 +39,13 @@ class TestProfileDetailApi:
             f"{profile.first_name} {profile.last_name[0]}."
             == response.data["full_name"]
         )
+
+    @pytest.mark.django_db
+    def test_when_profile_location_field_is_correctly_generated(self) -> None:
+        profile = ProfileFactory(is_active=True)
+        factory = APIRequestFactory()
+        request = factory.get(f"{self.url}/{profile.id}/")
+
+        response = ProfileDetailApi.as_view()(request, profile_id=profile.id)
+
+        assert f"{profile.city}, {profile.country}" == response.data["location"]

@@ -63,11 +63,11 @@ class ProfileUpdateApi(APIView):
     permission_classes = (IsAuthenticated,)
 
     class InputSerializer(serializers.Serializer):
-        first_name = serializers.CharField(max_length=50)
-        last_name = serializers.CharField(max_length=50)
-        country = serializers.CharField(max_length=50)
+        first_name = serializers.CharField(max_length=50, required=False)
+        last_name = serializers.CharField(max_length=50, required=False)
+        country = serializers.CharField(max_length=50, required=False)
         description = serializers.CharField(max_length=255, required=False)
-        city = serializers.CharField(max_length=50)
+        city = serializers.CharField(max_length=50, required=False)
 
     class OutputSerializer(serializers.Serializer):
         id = serializers.IntegerField()

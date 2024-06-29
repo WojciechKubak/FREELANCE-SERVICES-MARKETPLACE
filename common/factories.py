@@ -1,4 +1,5 @@
 from factory.django import DjangoModelFactory
+from factory import DictFactory
 from custom_auth.models import User, RoleType
 from categories.models import Category, Tag
 from profiles.models import Profile
@@ -47,3 +48,11 @@ class ProfileFactory(DjangoModelFactory):
     country = factory.Faker("country")
     city = factory.Faker("city")
     is_active = factory.Faker("boolean")
+
+
+class ProfileDataFactory(DictFactory):
+    first_name = factory.Faker("first_name")
+    last_name = factory.Faker("last_name")
+    description = factory.Faker("sentence")
+    country = factory.Faker("country")
+    city = factory.Faker("city")

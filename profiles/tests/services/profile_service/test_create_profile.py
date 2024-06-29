@@ -1,4 +1,4 @@
-from common.factories import UserFactory, ProfileFactory
+from common.factories import UserFactory, ProfileFactory, ProfileDataFactory
 from profiles.services import ProfileService
 from profiles.models import Profile
 from rest_framework.exceptions import ValidationError
@@ -6,12 +6,7 @@ import pytest
 
 
 class TestCreateProfile:
-    data = {
-        "first_name": "John",
-        "last_name": "Doe",
-        "country": "USA",
-        "city": "New York",
-    }
+    data = ProfileDataFactory()
 
     @pytest.mark.django_db
     def test_when_profile_already_exists(self) -> None:

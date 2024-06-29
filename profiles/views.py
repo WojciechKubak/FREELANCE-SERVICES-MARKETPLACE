@@ -4,7 +4,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT
+from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT, HTTP_201_CREATED
 from django.shortcuts import get_object_or_404
 
 
@@ -55,7 +55,7 @@ class ProfileCreateApi(APIView):
         )
         output_serializer = self.OutputSerializer(profile)
 
-        return Response(output_serializer.data, status=HTTP_200_OK)
+        return Response(output_serializer.data, status=HTTP_201_CREATED)
 
 
 class ProfileUpdateApi(APIView):

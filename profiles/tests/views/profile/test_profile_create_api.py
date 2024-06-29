@@ -24,5 +24,5 @@ class TestProfileCreateApi:
 
         response = ProfileCreateApi.as_view()(request)
 
-        assert response.status_code == 200
+        assert response.status_code == 201
         assert Profile.objects.filter(user=user).exists()

@@ -42,13 +42,15 @@ class ProfileService:
         profile = Profile.objects.filter(user=user).first()
         if not profile:
             raise ValidationError("Profile does not exist")
-        profile.update(
-            first_name=first_name,
-            last_name=last_name,
-            country=country,
-            city=city,
-            description=description,
-        )
+
+        profile.first_name = first_name if first_name else profile.first_name
+        profile.last_name = last_name if last_name else profile.last_name
+        profile.country = country if country else profile.country
+        profile.city = city if city else profile.city
+        profile.description = description if description else profile.description
+        profile.full_clean()
+        profile.save()
+
         return profile
 
     @staticmethod
@@ -56,7 +58,11 @@ class ProfileService:
         profile = Profile.objects.filter(user=user).first()
         if not profile:
             raise ValidationError("Profile does not exist")
-        profile.activate()
+
+        profile.is_active = True
+        profile.full_clean()
+        profile.save()
+
         return profile
 
     @staticmethod
@@ -64,5 +70,9 @@ class ProfileService:
         profile = Profile.objects.filter(user=user).first()
         if not profile:
             raise ValidationError("Profile does not exist")
-        profile.deactivate()
+
+        profile.is_active = False
+        profile.full_clean()
+        profile.save()
+
         return profile

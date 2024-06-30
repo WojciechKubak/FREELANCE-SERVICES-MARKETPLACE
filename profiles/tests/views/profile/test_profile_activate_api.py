@@ -12,12 +12,12 @@ class TestProfileActivateApi:
         request = auth_request(
             user=user,
             method="POST",
-            url="/profiles/999/activate",
+            url="/profiles/activate",
         )
 
-        response = ProfileActivateApi.as_view()(request, profile_id=999)
+        response = ProfileActivateApi.as_view()(request)
 
-        assert 404 == response.status_code
+        assert 400 == response.status_code
 
     @pytest.mark.django_db
     def test_when_profile_activated(self, auth_request) -> None:
@@ -26,10 +26,10 @@ class TestProfileActivateApi:
         request = auth_request(
             user=user,
             method="POST",
-            url=f"/profiles/{profile.id}/activate",
+            url="/profiles/activate",
         )
 
-        response = ProfileActivateApi.as_view()(request, profile_id=profile.id)
+        response = ProfileActivateApi.as_view()(request)
 
         assert 200 == response.status_code
         assert Profile.objects.filter(id=profile.id, is_active=True).exists()

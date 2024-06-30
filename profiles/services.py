@@ -50,3 +50,19 @@ class ProfileService:
             description=description,
         )
         return profile
+
+    @staticmethod
+    def activate_profile(*, user: User) -> Profile:
+        profile = Profile.objects.filter(user=user).first()
+        if not profile:
+            raise ValidationError("Profile does not exist")
+        profile.activate()
+        return profile
+
+    @staticmethod
+    def deactivate_profile(*, user: User) -> Profile:
+        profile = Profile.objects.filter(user=user).first()
+        if not profile:
+            raise ValidationError("Profile does not exist")
+        profile.deactivate()
+        return profile

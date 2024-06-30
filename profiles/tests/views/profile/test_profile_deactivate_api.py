@@ -12,12 +12,12 @@ class TestProfileDeactivateApi:
         request = auth_request(
             user=user,
             method="POST",
-            url="/profiles/999/deactivate",
+            url="/profiles/deactivate",
         )
 
-        response = ProfileDeactivateApi.as_view()(request, profile_id=999)
+        response = ProfileDeactivateApi.as_view()(request)
 
-        assert 404 == response.status_code
+        assert 400 == response.status_code
 
     @pytest.mark.django_db
     def test_when_profile_deactivated(self, auth_request) -> None:
@@ -26,10 +26,10 @@ class TestProfileDeactivateApi:
         request = auth_request(
             user=user,
             method="POST",
-            url=f"/profiles/{profile.id}/deactivate",
+            url="/profiles/deactivate",
         )
 
-        response = ProfileDeactivateApi.as_view()(request, profile_id=profile.id)
+        response = ProfileDeactivateApi.as_view()(request)
 
         assert 204 == response.status_code
         assert Profile.objects.filter(id=profile.id, is_active=False).exists()

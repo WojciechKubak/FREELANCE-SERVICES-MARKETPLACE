@@ -92,16 +92,14 @@ class ProfileUpdateApi(APIView):
 class ProfileDeactivateApi(APIView):
     permission_classes = (IsAuthenticated,)
 
-    def post(self, _: Request, profile_id: int) -> Response:
-        profile = get_object_or_404(Profile, id=profile_id)
-        profile.deactivate()
+    def post(self, request: Request) -> Response:
+        ProfileService.deactivate_profile(user=request.user)
         return Response(status=HTTP_204_NO_CONTENT)
 
 
 class ProfileActivateApi(APIView):
     permission_classes = (IsAuthenticated,)
 
-    def post(self, _: Request, profile_id: int) -> Response:
-        profile = get_object_or_404(Profile, id=profile_id)
-        profile.activate()
+    def post(self, request: Request) -> Response:
+        ProfileService.activate_profile(user=request.user)
         return Response(status=HTTP_200_OK)

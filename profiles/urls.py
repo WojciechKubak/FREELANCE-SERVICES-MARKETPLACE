@@ -13,12 +13,12 @@ profile_patterns = [
     path("create/", ProfileCreateApi.as_view(), name="profile-create"),
     path("update/", ProfileUpdateApi.as_view(), name="profile-update"),
     path(
-        "<int:profile_id>/activate/",
+        "activate/",
         ProfileActivateApi.as_view(),
         name="profile-activate",
     ),
     path(
-        "<int:profile_id>/deactivate/",
+        "deactivate/",
         ProfileDeactivateApi.as_view(),
         name="profile-deactivate",
     ),

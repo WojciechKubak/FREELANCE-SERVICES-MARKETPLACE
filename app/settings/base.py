@@ -37,6 +37,7 @@ LOCAL_APPS = [
     "custom_auth",
     "emails",
     "categories",
+    "profiles",
 ]
 
 THIRD_PARTY_APPS = [
